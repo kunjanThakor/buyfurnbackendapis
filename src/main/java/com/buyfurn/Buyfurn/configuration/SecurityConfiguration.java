@@ -33,7 +33,7 @@ public class SecurityConfiguration {
 		return authenticationProvider;
 	}
 	
-	
+	//cors configuration
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
