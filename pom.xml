@@ -29,7 +29,8 @@
 		<url />
 	</scm>
 	<properties>
-		<java.version>22</java.version>
+		<java.version>17</java.version>
+		<maven.logging.level>DEBUG</maven.logging.level>
 	</properties>
 	<dependencies>
 		<dependency>
