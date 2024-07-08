@@ -2,8 +2,11 @@ package com.buyfurn.Buyfurn.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,4 +50,23 @@ public class UserController {
 	public List<User> getAll(){
 		return userService.getAll();
 	}
+	
+	@PostMapping("/generate-otp")
+    public ResponseEntity<String> generateOtp(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        if (userService.verifyEmail(email)) {
+        
+            return new ResponseEntity<String>(HttpStatus.FOUND);
+        }
+        userService.generateOtp(email);
+        
+        return new ResponseEntity<String>(userService.generateOtp(email),HttpStatus.OK);
+    }
+    
+    @PostMapping("/verify-otp")
+    public boolean verifyOtp(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        String otp = request.get("otp");
+        return userService.validateOtp(email, otp);
+    }
 }

@@ -1,6 +1,9 @@
 package com.buyfurn.Buyfurn.service;
 
+import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,5 +43,39 @@ public class UserService {
 		return userRepository.findByEmail(username);
 	}
 	
-	
+	private final Map<String, String> otpStorage = new HashMap<>();
+	private final SecureRandom random = new SecureRandom();
+
+	public String generateOtp(String email) {
+		String otp = String.valueOf(100000 + random.nextInt(900000)); // Generate 6-digit OTP
+		otpStorage.put(email, otp);
+		System.out.println(otpStorage);
+		return otp;
+	}
+
+	public boolean validateOtp(String email, String otp) {
+		String storedOtp = otpStorage.get(email);
+		if (storedOtp != null && storedOtp.equals(otp)) {
+			otpStorage.remove(email); 
+			return true;
+		}
+		return false;
+	}
+
+	public void clearOtp(String email) {
+		otpStorage.remove(email);
+	}
+
+	public boolean verifyEmail(String email) {
+		User user=  userRepository.findByEmail(email);
+		
+		if(user!=null) {
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+
+	}
 }
