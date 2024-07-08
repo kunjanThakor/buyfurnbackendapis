@@ -11,83 +11,132 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.ElementCollection;
 
 @Entity
 public class Product {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String title;
-	private String description;
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "product_id")
-	private List<ProductImages> productImages = new ArrayList();
-	private double price;
-	private int warranty;
-	private String category;
-	
-	
-	public Product() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+    private String description;
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id")
+    private List<ProductImages> productImages = new ArrayList<>();
 
-	public Long getId() {
-		return id;
-	}
+    private double price;
+    private String warranty;
+    private String category;
+    private String color;
+    
+    @ElementCollection
+    private List<String> material = new ArrayList<>();
+    
+    private int seatingCapacity;
+    private double weight;
+    private String careAndMaintenance;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Product() {
+        super();
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    // Getters and setters
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public List<ProductImages> getProductImages() {
-		return productImages;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setProductImages(List<ProductImages> productImages) {
-		this.productImages = productImages;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public double getPrice() {
-		return price;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setPrice(double price) {
-		this.price = price;
-	}
+    public List<ProductImages> getProductImages() {
+        return productImages;
+    }
 
-	public int getWarranty() {
-		return warranty;
-	}
+    public void setProductImages(List<ProductImages> productImages) {
+        this.productImages = productImages;
+    }
 
-	public void setWarranty(int warranty) {
-		this.warranty = warranty;
-	}
+    public double getPrice() {
+        return price;
+    }
 
-	public String getCategory() {
-		return category;
-	}
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
-	
-	
+    public String getWarranty() {
+        return warranty;
+    }
+
+    public void setWarranty(String warranty) {
+        this.warranty = warranty;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public List<String> getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(List<String> material) {
+        this.material = material;
+    }
+
+    public int getSeatingCapacity() {
+        return seatingCapacity;
+    }
+
+    public void setSeatingCapacity(int seatingCapacity) {
+        this.seatingCapacity = seatingCapacity;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public String getCareAndMaintenance() {
+        return careAndMaintenance;
+    }
+
+    public void setCareAndMaintenance(String careAndMaintenance) {
+        this.careAndMaintenance = careAndMaintenance;
+    }
 }
