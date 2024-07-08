@@ -59,6 +59,7 @@ public class SecurityConfiguration {
 		});
 //		http.formLogin(Customizer.withDefaults());
 		http.httpBasic(Customizer.withDefaults());
+		http.oauth2Client(Customizer.withDefaults());
 		return http.build();
 	}
 }
