@@ -39,4 +39,9 @@ public class ProductServices {
 	public List<Product> getAllProducts() {
 		return productRepository.findAll();
 	}
+
+	public Product getById(Long id) {
+		// TODO Auto-generated method stub
+		return productRepository.findById(id).get();
+	}
 }
