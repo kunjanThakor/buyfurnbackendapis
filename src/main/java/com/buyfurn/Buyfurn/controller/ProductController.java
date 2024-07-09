@@ -42,4 +42,9 @@ public class ProductController {
 	 public Product getbyId(@PathVariable Long id) {
 		 return productServices.getById(id);
 	 }
+	 
+	 @PostMapping(value = "/admin/updateproduct", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	 public Product updateProduct(@RequestPart("product") Product product, @RequestPart("img") MultipartFile[] image) throws IOException {
+		 return productServices.updateProduct(product,image);
+	 }
 }

@@ -31,8 +31,8 @@ public class Product {
     private String category;
     private String color;
     
-    @ElementCollection
-    private List<String> material = new ArrayList<>();
+ 
+    private String material;
     
     private int seatingCapacity;
     private double weight;
@@ -108,11 +108,11 @@ public class Product {
         this.color = color;
     }
 
-    public List<String> getMaterial() {
+    public String getMaterial() {
         return material;
     }
 
-    public void setMaterial(List<String> material) {
+    public void setMaterial(String material) {
         this.material = material;
     }
 

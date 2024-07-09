@@ -44,4 +44,12 @@ public class ProductServices {
 		// TODO Auto-generated method stub
 		return productRepository.findById(id).get();
 	}
+
+	public Product updateProduct(Product product, MultipartFile[] image) throws IOException {
+
+		Product newProduct = productRepository.findById(product.getId()).get();
+		newProduct.setProductImages(uploadImages(image));
+		productRepository.save(newProduct);
+		return product;
+	}
 }
