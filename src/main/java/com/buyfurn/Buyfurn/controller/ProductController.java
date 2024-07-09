@@ -45,7 +45,9 @@ public class ProductController {
 	 }
 	 
 	 @PostMapping(value = "/admin/updateproduct", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	 public Product updateProduct(@RequestPart("product") Product product, @RequestPart("img") MultipartFile[] image) throws IOException {
+	 public Product updateProduct(@RequestPart("product") String prod, @RequestPart(value="img",required = false) MultipartFile[] image) throws IOException {
+		 ObjectMapper objectMapper = new ObjectMapper();
+	        Product product = objectMapper.readValue(prod, Product.class);
 		 return productServices.updateProduct(product,image);
 	 }
 	 

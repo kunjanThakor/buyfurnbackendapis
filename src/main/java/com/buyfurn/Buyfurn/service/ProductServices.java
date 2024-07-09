@@ -23,16 +23,17 @@ public class ProductServices {
 		productRepository.save(product);
 		return product;
 	}
-	
-	public List<ProductImages> uploadImages(MultipartFile[] imgs) throws IOException{
-		
-		List<ProductImages> productImages= new ArrayList<ProductImages>();
-		
+
+	public List<ProductImages> uploadImages(MultipartFile[] imgs) throws IOException {
+
+		List<ProductImages> productImages = new ArrayList<ProductImages>();
+
 		for (int i = 0; i < imgs.length; i++) {
-			ProductImages images  = new ProductImages(imgs[i].getOriginalFilename(), imgs[i].getContentType(), imgs[i].getBytes());
+			ProductImages images = new ProductImages(imgs[i].getOriginalFilename(), imgs[i].getContentType(),
+					imgs[i].getBytes());
 			productImages.add(images);
 		}
-		
+
 		return productImages;
 	}
 
@@ -47,10 +48,27 @@ public class ProductServices {
 
 	public Product updateProduct(Product product, MultipartFile[] image) throws IOException {
 
-		Product newProduct = productRepository.findById(product.getId()).get();
-		newProduct.setProductImages(uploadImages(image));
-		productRepository.save(newProduct);
-		return product;
+	    // Check if the image array is null and set it to an empty array if it is
+	    if (image == null) {
+	        image = new MultipartFile[0];
+	    }
+
+	    Product newProduct = productRepository.findById(product.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid product ID"));
+	    newProduct.setTitle(product.getTitle());
+	    newProduct.setColor(product.getColor());
+	    newProduct.setCareAndMaintenance(product.getCareAndMaintenance());
+	    newProduct.setWeight(product.getWeight());
+	    newProduct.setDescription(product.getDescription());
+	    newProduct.setSeatingCapacity(product.getSeatingCapacity());
+	    newProduct.setPrice(product.getPrice());
+	    newProduct.setMaterial(product.getMaterial());
+
+	    if (image.length > 0) {
+	        newProduct.setProductImages(uploadImages(image));
+	    }
+
+	    productRepository.save(newProduct);
+	    return newProduct; // Return the updated product
 	}
 
 	public String deleteById(Long id) {
