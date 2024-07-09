@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,5 +47,11 @@ public class ProductController {
 	 @PostMapping(value = "/admin/updateproduct", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	 public Product updateProduct(@RequestPart("product") Product product, @RequestPart("img") MultipartFile[] image) throws IOException {
 		 return productServices.updateProduct(product,image);
+	 }
+	 
+	 @DeleteMapping("/admin/deletebyid/{id}")
+	 public String deleteById(@PathVariable Long id)
+	 {
+		 return productServices.deleteById(id);
 	 }
 }

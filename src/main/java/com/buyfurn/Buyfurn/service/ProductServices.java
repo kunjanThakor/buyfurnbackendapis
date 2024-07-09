@@ -52,4 +52,9 @@ public class ProductServices {
 		productRepository.save(newProduct);
 		return product;
 	}
+
+	public String deleteById(Long id) {
+		productRepository.deleteById(id);
+		return "Product Deleted !!";
+	}
 }
