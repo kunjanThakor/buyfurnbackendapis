@@ -1,5 +1,6 @@
 package com.buyfurn.Buyfurn.service;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.security.SecureRandom;
 import java.util.HashMap;
@@ -9,8 +10,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.buyfurn.Buyfurn.model.User;
+import com.buyfurn.Buyfurn.model.UserImage;
 import com.buyfurn.Buyfurn.repository.UserRepository;
 
 @Service
@@ -84,5 +87,31 @@ public class UserService {
 		User user = userRepository.findByEmail(principal.getName());
 		userRepository.delete(user);
 		return "User Deleted";
+	}
+
+	 public User updateUser(User user, MultipartFile image) throws IOException {
+	        User existingUser = userRepository.findById(user.getId())
+	                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+
+	        existingUser.setName(user.getName());
+	        existingUser.setEmail(user.getEmail());
+	        existingUser.setPasword(user.getPasword());
+	        existingUser.setRoles(user.getRoles());
+	        existingUser.setAddress(user.getAddress());
+	        existingUser.setContactNumber(user.getContactNumber());
+
+	        if (image != null && !image.isEmpty()) {
+	            UserImage userImage = uploadImage(image);
+	            existingUser.setUserImage(userImage);
+	        }
+
+	        userRepository.save(existingUser);
+	        return existingUser;
+	    }
+
+	
+	private UserImage uploadImage(MultipartFile image) throws IOException {
+		UserImage userImage=new UserImage(image.getOriginalFilename(), image.getContentType(), image.getBytes());
+		return userImage;
 	}
 }

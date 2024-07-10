@@ -1,21 +1,28 @@
 package com.buyfurn.Buyfurn.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.buyfurn.Buyfurn.model.Product;
 import com.buyfurn.Buyfurn.model.User;
 import com.buyfurn.Buyfurn.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -74,6 +81,13 @@ public class UserController {
     @DeleteMapping("/user/delete")
     public String deleteUser(Principal principal) {
     	return userService.deleteUser(principal);
+    }
+    
+    @PostMapping(value = "/user/updateuser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public User updateUser(@RequestPart("user") String userJson, @RequestPart(value="img",required = false) MultipartFile image) throws IOException {
+		 ObjectMapper objectMapper = new ObjectMapper();
+	        User user = objectMapper.readValue(userJson, User.class);
+    	return userService.updateUser(user,image);
     }
     
     
