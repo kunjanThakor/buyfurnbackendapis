@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.buyfurn.Buyfurn.model.Product;
 import com.buyfurn.Buyfurn.model.User;
 import com.buyfurn.Buyfurn.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,42 +52,47 @@ public class UserController {
 			return null;
 		}
 	}
-	
+
 	@GetMapping("/getall")
-	public List<User> getAll(){
+	public List<User> getAll() {
 		return userService.getAll();
 	}
-	
+
 	@PostMapping("/generate-otp")
-    public ResponseEntity<String> generateOtp(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        if (userService.verifyEmail(email)) {
-        
-            return new ResponseEntity<String>(HttpStatus.FOUND);
-        }
-        userService.generateOtp(email);
-        
-        return new ResponseEntity<String>(userService.generateOtp(email),HttpStatus.OK);
-    }
-    
-    @PostMapping("/verify-otp")
-    public boolean verifyOtp(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        String otp = request.get("otp");
-        return userService.validateOtp(email, otp);
-    }
-    
-    @DeleteMapping("/user/delete")
-    public String deleteUser(Principal principal) {
-    	return userService.deleteUser(principal);
-    }
-    
-    @PostMapping(value = "/user/updateuser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public User updateUser(@RequestPart("user") String userJson, @RequestPart(value="img",required = false) MultipartFile image) throws IOException {
-		 ObjectMapper objectMapper = new ObjectMapper();
-	        User user = objectMapper.readValue(userJson, User.class);
-    	return userService.updateUser(user,image);
-    }
-    
-    
+	public ResponseEntity<String> generateOtp(@RequestBody Map<String, String> request) {
+		String email = request.get("email");
+		if (userService.verifyEmail(email)) {
+
+			return new ResponseEntity<String>(HttpStatus.FOUND);
+		}
+		userService.generateOtp(email);
+
+		return new ResponseEntity<String>(userService.generateOtp(email), HttpStatus.OK);
+	}
+
+	@PostMapping("/verify-otp")
+	public boolean verifyOtp(@RequestBody Map<String, String> request) {
+		String email = request.get("email");
+		String otp = request.get("otp");
+		return userService.validateOtp(email, otp);
+	}
+
+	@DeleteMapping("/user/delete")
+	public String deleteUser(Principal principal) {
+		return userService.deleteUser(principal);
+	}
+
+	@PostMapping(value = "/user/updateuser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public User updateUser(@RequestPart("user") String userJson,
+			@RequestPart(value = "img", required = false) MultipartFile image) throws IOException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		User user = objectMapper.readValue(userJson, User.class);
+		return userService.updateUser(user, image);
+	}
+	
+	@GetMapping("/user/getByEmail/{email}")
+	public User getByEmail(@PathVariable String email) {
+		return userService.getUser(email);
+	}
+
 }
