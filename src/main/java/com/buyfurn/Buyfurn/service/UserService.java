@@ -1,5 +1,6 @@
 package com.buyfurn.Buyfurn.service;
 
+import java.security.Principal;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.List;
@@ -77,5 +78,11 @@ public class UserService {
 			return false;
 		}
 
+	}
+
+	public String deleteUser(Principal principal) {
+		User user = userRepository.findByEmail(principal.getName());
+		userRepository.delete(user);
+		return "User Deleted";
 	}
 }

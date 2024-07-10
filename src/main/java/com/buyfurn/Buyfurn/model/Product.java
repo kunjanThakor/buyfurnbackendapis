@@ -37,8 +37,17 @@ public class Product {
     private int seatingCapacity;
     private double weight;
     private String careAndMaintenance;
+    private String stockStatus;
 
-    public Product() {
+    public String getStockStatus() {
+		return stockStatus;
+	}
+
+	public void setStockStatus(String stockStatus) {
+		this.stockStatus = stockStatus;
+	}
+
+	public Product() {
         super();
     }
 
