@@ -79,8 +79,9 @@ public class UserController {
 	}
 
 	@DeleteMapping("/user/delete")
-	public ResponseEntity<String> deleteUser(Principal principal) {
-		return  new ResponseEntity<String>(userService.deleteUser(principal),HttpStatus.OK);
+	public ResponseEntity<HttpStatus> deleteUser(Principal principal) {
+		userService.deleteUser(principal);
+		return  new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/user/updateuser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
