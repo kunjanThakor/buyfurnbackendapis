@@ -3,6 +3,7 @@ package com.buyfurn.Buyfurn.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,6 @@ public class ProductServices {
 
 	public Product updateProduct(Product product, MultipartFile[] image) throws IOException {
 
-	    // Check if the image array is null and set it to an empty array if it is
 	    if (image == null) {
 	        image = new MultipartFile[0];
 	    }
@@ -62,6 +62,9 @@ public class ProductServices {
 	    newProduct.setSeatingCapacity(product.getSeatingCapacity());
 	    newProduct.setPrice(product.getPrice());
 	    newProduct.setMaterial(product.getMaterial());
+	    newProduct.setStockStatus(product.getStockStatus());
+	    newProduct.setCategory(product.getCategory());
+	    newProduct.setWarranty(product.getWarranty());
 
 	    if (image.length > 0) {
 	        newProduct.setProductImages(uploadImages(image));
@@ -72,7 +75,12 @@ public class ProductServices {
 	}
 
 	public String deleteById(Long id) {
-		productRepository.deleteById(id);
-		return "Product Deleted !!";
-	}
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent()) {
+            productRepository.deleteById(id);
+            return "Product Deleted !!";
+        } else {
+            return "Product not found !!";
+        }
+    }
 }
