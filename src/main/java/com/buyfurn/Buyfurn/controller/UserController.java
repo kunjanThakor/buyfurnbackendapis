@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -78,8 +79,8 @@ public class UserController {
 	}
 
 	@DeleteMapping("/user/delete")
-	public String deleteUser(Principal principal) {
-		return userService.deleteUser(principal);
+	public ResponseEntity<String> deleteUser(Principal principal) {
+		return  new ResponseEntity<String>(userService.deleteUser(principal),HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/user/updateuser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
