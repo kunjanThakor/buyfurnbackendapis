@@ -34,7 +34,6 @@ public class UserService {
 	public User updateUserRole(Long id, List<String> role) {
 		User user = userRepository.findById(id).get();
 		user.setRoles(role);
-//		user.setPasword(encoder.encode(user.getPasword()));
 		userRepository.save(user);
 		return user;
 	}
