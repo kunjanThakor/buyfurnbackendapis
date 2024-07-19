@@ -2,6 +2,9 @@ package com.buyfurn.Buyfurn.controller;
 
 import com.buyfurn.Buyfurn.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,12 +18,12 @@ public class EmailController {
     private EmailService emailService;
 
     @PostMapping("/send-email")
-    public String sendEmail(@RequestBody EmailRequest emailRequest) {
+    public ResponseEntity<HttpStatus> sendEmail(@RequestBody EmailRequest emailRequest) {
         try {
             emailService.sendEmail(emailRequest.getTo(), emailRequest.getSubject(), emailRequest.getText());
-            return "Email sent successfully!";
+            return new ResponseEntity<HttpStatus>(HttpStatus.OK);
         } catch (Exception e) {
-            return "Failed to send email: " + e.getMessage();
+        	return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
         }
     }
 
