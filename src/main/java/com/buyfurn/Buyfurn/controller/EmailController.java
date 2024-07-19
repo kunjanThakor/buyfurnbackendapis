@@ -19,12 +19,9 @@ public class EmailController {
 
     @PostMapping("/send-email")
     public ResponseEntity<HttpStatus> sendEmail(@RequestBody EmailRequest emailRequest) {
-        try {
+        
             emailService.sendEmail(emailRequest.getTo(), emailRequest.getSubject(), emailRequest.getText());
             return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-        } catch (Exception e) {
-        	return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
-        }
     }
 
     // Define a simple POJO to represent the email request
