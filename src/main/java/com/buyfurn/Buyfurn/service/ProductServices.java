@@ -43,7 +43,6 @@ public class ProductServices {
 	}
 
 	public Product getById(Long id) {
-		// TODO Auto-generated method stub
 		return productRepository.findById(id).get();
 	}
 

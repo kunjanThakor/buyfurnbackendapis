@@ -114,4 +114,13 @@ public class UserService {
 		UserImage userImage=new UserImage(image.getOriginalFilename(), image.getContentType(), image.getBytes());
 		return userImage;
 	}
+
+	public User getUserById(Long userId) {
+		
+		return userRepository.findById(userId).get();
+	}
+
+	public void updateUserCart(User user) {
+		  userRepository.save(user);
+	}
 }
