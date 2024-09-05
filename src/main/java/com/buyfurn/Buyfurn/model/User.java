@@ -40,7 +40,7 @@ public class User {
 			@JoinColumn(name = "image_id") })
 	UserImage userImage;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "cart_id")
 	private Cart cart;
 

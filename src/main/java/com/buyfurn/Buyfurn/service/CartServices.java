@@ -27,4 +27,9 @@ public class CartServices {
             cartRepository.save(cart);
         }
     }
+	
+	 // Update cart (either for adding/removing products)
+    public void updateCart(Cart cart) {
+        cartRepository.save(cart);  // Save updated cart
+    }
 }

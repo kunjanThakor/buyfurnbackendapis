@@ -1,6 +1,7 @@
 package com.buyfurn.Buyfurn.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -75,4 +76,59 @@ public class CartController {
 	            return new ResponseEntity<>("An error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	        }
 	    }
+	    
+	    @GetMapping("/cart/products")
+	    public ResponseEntity<List<Product>> getCartProducts(Principal principal) {
+	        try {
+	            User user = userService.getUser(principal.getName());
+	            if (user == null) {
+	                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	            }
+
+	            Cart cart = user.getCart();
+	            if (cart == null || cart.getProducts().isEmpty()) {
+	                return new ResponseEntity<>(HttpStatus.NO_CONTENT); // No products in the cart
+	            }
+
+	            List<Product> products = cart.getProducts();
+	            return new ResponseEntity<>(products, HttpStatus.OK);
+	        } catch (Exception e) {
+	            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    }
+	    
+	    @PostMapping("/addOrRemoveFromCart/{id}")
+	    public ResponseEntity<String> addOrRemoveFromCart(@PathVariable Long id, Principal principal) {
+	        try {
+	            User user = userService.getUser(principal.getName());
+	            if (user == null) {
+	                return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+	            }
+
+	            Product product = productService.getById(id);  // Fetch product from the database
+	            if (product == null) {
+	                return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+	            }
+
+	            Cart cart = user.getCart();
+	            if (cart == null) {
+	                return new ResponseEntity<>("Cart not found", HttpStatus.NOT_FOUND);
+	            }
+
+	            // Ensure you're working with the same instance of the product
+	            if (cart.getProducts().contains(product)) {
+	                cart.getProducts().remove(product);  // Remove product from cart
+	            } else {
+	                cart.getProducts().add(product);  // Add product to cart
+	            }
+
+	            // Use CartService to update the cart
+	            cartService.updateCart(cart);  // Save the updated cart
+
+	            return new ResponseEntity<>("Cart updated", HttpStatus.OK);
+	        } catch (Exception e) {
+	            return new ResponseEntity<>("An error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    }
+
 }
